@@ -10,6 +10,8 @@ Ketika salah satu klien mengirimkan pesan, server akan mencatat alamat IP pengir
 Kemampuan distribusi pesan secara massal ini berpusat pada penggunaan Tokio broadcast channel, yang memfasilitasi server untuk membagikan setiap data masuk ke semua koneksi klien sekaligus. Selain itu, makro tokio::select! diimplementasikan baik pada sisi server maupun klien guna mengelola proses kirim dan terima pesan secara simultan (concurrent). Secara keseluruhan, eksperimen ini berhasil mendemonstrasikan pemanfaatan fitur asinkronus Rust dan komunikasi berbasis channel untuk membangun arsitektur obrolan terdistribusi yang
 
 ## Modifying the websocket port
+<img width="1106" height="245" alt="image" src="https://github.com/user-attachments/assets/004f36a6-4e39-4915-9d48-0aea2bb0ee70" />
+
 Pada skenario kali ini, konfigurasi port untuk server dan klien telah disamakan, yaitu menggunakan port 8080. Berdasarkan tangkapan layar yang dilampirkan, server berhasil aktif dan mendengarkan koneksi pada port tersebut, sementara pihak klien dapat langsung terhubung tanpa kendala. Begitu koneksi terjalin, klien segera menerima pesan sambutan yang dikirimkan oleh server.
 
 Interaksi yang berjalan mulus ini membuktikan bahwa komunikasi berbasis WebSocket hanya dapat berfungsi secara valid jika alamat host dan nomor port pada kedua sisi benar-benar selaras. Hal ini kontras dengan pengujian sebelumnya yang menggunakan port berbeda—di mana klien mencoba mengakses port 8080 padahal server berada di port 2000 sehingga koneksi gagal. Dengan menyamakan port, proses TCP handshake dapat berjalan sukses, yang kemudian memungkinkan protokol WebSocket untuk melakukan negosiasi (handshake WebSocket) dan membuka jalur komunikasi dua arah (two-way communication channel) secara penuh.
