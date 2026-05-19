@@ -15,3 +15,10 @@ Kemampuan distribusi pesan secara massal ini berpusat pada penggunaan Tokio broa
 Pada skenario kali ini, konfigurasi port untuk server dan klien telah disamakan, yaitu menggunakan port 8080. Berdasarkan tangkapan layar yang dilampirkan, server berhasil aktif dan mendengarkan koneksi pada port tersebut, sementara pihak klien dapat langsung terhubung tanpa kendala. Begitu koneksi terjalin, klien segera menerima pesan sambutan yang dikirimkan oleh server.
 
 Interaksi yang berjalan mulus ini membuktikan bahwa komunikasi berbasis WebSocket hanya dapat berfungsi secara valid jika alamat host dan nomor port pada kedua sisi benar-benar selaras. Hal ini kontras dengan pengujian sebelumnya yang menggunakan port berbeda—di mana klien mencoba mengakses port 8080 padahal server berada di port 2000 sehingga koneksi gagal. Dengan menyamakan port, proses TCP handshake dapat berjalan sukses, yang kemudian memungkinkan protokol WebSocket untuk melakukan negosiasi (handshake WebSocket) dan membuka jalur komunikasi dua arah (two-way communication channel) secara penuh.
+
+## Small changes. Add some information to client
+![alt text](image.png)
+
+Pada tahap eksperimen ini, pembaruan dilakukan pada sisi klien dengan memodifikasi format visual pesan menjadi "From Satria's computer server: ...". Perubahan tampilan ini diterapkan langsung di dalam file client.rs pada bagian yang menangani pencetakan pesan masuk.
+
+Sementara itu, pada sisi server (server.rs), ditambahkan baris kode bcast_tx.send(format!("{addr} : {text}"))?; untuk memastikan setiap pesan yang masuk dikemas bersama alamat IP dan nomor port pengirim sebelum disebarluaskan (broadcast). Melalui kombinasi kedua perubahan ini, setiap klien kini dapat mengidentifikasi pengirim pesan secara transparan, lengkap dengan teks prefiks yang mudah dibaca serta detail teknis koneksi sebagai pengenal unik.
